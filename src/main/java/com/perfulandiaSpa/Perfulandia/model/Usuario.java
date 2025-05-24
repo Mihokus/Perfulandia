@@ -1,4 +1,4 @@
-package com.perfulandiaSpa.Perfulandia.controller;
+package com.perfulandiaSpa.Perfulandia.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
