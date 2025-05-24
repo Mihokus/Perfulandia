@@ -1,0 +1,26 @@
+package com.perfulandiaSpa.Perfulandia.controller;
+
+import com.perfulandiaSpa.Perfulandia.model.Usuario;
+import com.perfulandiaSpa.Perfulandia.service.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RequestMapping("/api/v1/usuario")
+@RestController
+
+public class UsuarioController {
+    @Autowired
+    private UsuarioService usuarioService;
+
+
+    @PostMapping("/v1")
+    public ResponseEntity<Usuario> guardar(@RequestBody Usuario usuario) {
+        Usuario usuarioNuevo = usuarioService.save(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioNuevo);
+    }
+
+
+}
