@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
+
 @Entity
 @Table(name = "rol")
 @Data
@@ -21,8 +23,8 @@ public class Rol {
     @Column(nullable = false)
     private String tipoRol;
 
-
-
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Permisos> permisos;
 
 
 }
