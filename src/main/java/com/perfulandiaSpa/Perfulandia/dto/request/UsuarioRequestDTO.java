@@ -10,7 +10,7 @@ public class UsuarioRequestDTO {
     private String run;
     private String nombre;
     private String apellido;
-    private String email;
+    private String correo;
     private Date fechaNacimiento;
     private boolean activo;
     private Long roleId;

@@ -16,11 +16,5 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
 
-    @PostMapping("/v1")
-    public ResponseEntity<Usuario> guardar(@RequestBody Usuario usuario) {
-        Usuario usuarioNuevo = usuarioService.save(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioNuevo);
-    }
-
 
 }
