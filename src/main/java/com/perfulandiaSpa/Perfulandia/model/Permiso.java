@@ -18,7 +18,7 @@ public class Permiso {
     private long id;
 
     @Column(nullable = false)
-    private String permisoOtorgado;
+    private String nombrePermiso;
 
 
 }

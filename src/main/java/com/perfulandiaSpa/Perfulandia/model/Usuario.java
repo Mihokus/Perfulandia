@@ -39,6 +39,7 @@ public class Usuario {
     private boolean activo = true;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rol_Id")
     private Rol rol;
 
 

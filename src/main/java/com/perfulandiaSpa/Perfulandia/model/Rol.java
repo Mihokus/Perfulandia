@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,6 +25,10 @@ public class Rol {
     private String tipoRol;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Permiso> permisos;
+    @JoinTable(
+            name = "rolPermiso",
+            joinColumns = @JoinColumn(name = "rol_Id"),
+            inverseJoinColumns = @JoinColumn(name = "permiso_Id"))
+    private Set<Permiso> permisos = new HashSet<>();
 
 }
