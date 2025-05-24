@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 
 
-public class Permisos {
+public class Permiso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

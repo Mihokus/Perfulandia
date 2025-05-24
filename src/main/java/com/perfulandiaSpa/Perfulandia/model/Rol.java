@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "rol")
@@ -23,6 +24,6 @@ public class Rol {
     private String tipoRol;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Permisos> permisos;
+    private Set<Permiso> permisos;
 
 }
