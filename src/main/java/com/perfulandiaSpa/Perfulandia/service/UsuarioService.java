@@ -1,6 +1,8 @@
 package com.perfulandiaSpa.Perfulandia.service;
 
 import com.perfulandiaSpa.Perfulandia.dto.request.UsuarioRequestDTO;
+import com.perfulandiaSpa.Perfulandia.dto.response.UsuarioDTO;
+import com.perfulandiaSpa.Perfulandia.model.Permiso;
 import com.perfulandiaSpa.Perfulandia.model.Rol;
 import com.perfulandiaSpa.Perfulandia.model.Usuario;
 import com.perfulandiaSpa.Perfulandia.repository.RolRepository;
@@ -11,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.parser.Entity;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -32,7 +33,6 @@ public class UsuarioService {
         usuario.setCorreo(usuarioRequestDTO.getCorreo());
         usuario.setFechaNacimiento(usuarioRequestDTO.getFechaNacimiento());
         usuario.setActivo(usuarioRequestDTO.isActivo());
-
         Optional<Rol> rol = rolRepository.findById(usuarioRequestDTO.getRoleId());
         if (rol.isEmpty()){
             throw new EntityNotFoundException("Rol no encontrado");
@@ -40,4 +40,28 @@ public class UsuarioService {
         usuario.setRol(rol.get());
         return usuarioRepository.save(usuario);
     }
+    public List<UsuarioDTO> listarUsuarios() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        List<UsuarioDTO> usuarioDTOS = new ArrayList<>();
+
+        for (Usuario usuario : usuarios) {
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            usuarioDTO.setId(usuario.getId());
+            usuarioDTO.setNombre(usuario.getNombre());
+            usuarioDTO.setApellido(usuario.getApellido());
+            usuarioDTO.setRun(usuario.getRun());
+            usuarioDTO.setFechaNacimiento(usuario.getFechaNacimiento());
+            usuarioDTO.setRol(usuario.getRol().getTipoRol());
+            Set<String> permisos = new HashSet<>();
+            for (Permiso permiso : usuario.getRol().getPermisos()) {
+                permisos.add(permiso.getNombrePermiso());
+            }
+            usuarioDTO.setPermiso(permisos);
+            usuarioDTOS.add(usuarioDTO);
+        }
+        return usuarioDTOS;
+
+    }
+
+
 }
