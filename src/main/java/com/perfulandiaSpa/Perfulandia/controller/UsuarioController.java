@@ -1,5 +1,6 @@
 package com.perfulandiaSpa.Perfulandia.controller;
 
+import com.perfulandiaSpa.Perfulandia.dto.request.UsuarioRequestDTO;
 import com.perfulandiaSpa.Perfulandia.model.Usuario;
 import com.perfulandiaSpa.Perfulandia.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,14 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+
+
+    @PostMapping
+    public ResponseEntity<Usuario> crearUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
+        Usuario usuario = usuarioService.crearUsuario(usuarioRequestDTO);
+        return  ResponseEntity.ok(usuario);
+
+    }
 
 
 }
