@@ -2,10 +2,11 @@ package com.perfulandiaSpa.Perfulandia.dto.response;
 
 import com.perfulandiaSpa.Perfulandia.model.Usuario;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.Set;
-
+@NoArgsConstructor
 @Data
 public class UsuarioDTO {
     private long id;
@@ -19,10 +20,11 @@ public class UsuarioDTO {
     private Set<String> permiso;
 
 
-    public UsuarioDTO(long id, String run, String nombre, String apellido, Date fechaNacimiento, boolean activo, String rol ,  Set<String>permiso){
+    public UsuarioDTO(Long id, String run, String nombre, String apellido, String correo, Date fechaNacimiento, boolean activo, String rol ,  Set<String>permiso){
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
+        this.correo = correo;
         this.fechaNacimiento = fechaNacimiento;
         this.activo = activo;
         this.rol = rol;

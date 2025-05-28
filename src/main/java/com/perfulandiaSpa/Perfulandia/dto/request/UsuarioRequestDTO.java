@@ -13,5 +13,5 @@ public class UsuarioRequestDTO {
     private String correo;
     private Date fechaNacimiento;
     private boolean activo;
-    private Long roleId;
+    private Long rolId;
 }
