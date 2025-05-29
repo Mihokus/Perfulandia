@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RequestMapping("/api/v1/usuarios")
@@ -21,17 +22,38 @@ public class UsuarioController {
 
 
 
-    @PostMapping
-    public ResponseEntity<UsuarioDTO> crearUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
-        Usuario usuario = usuarioService.crearUsuario(usuarioRequestDTO);
-        UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
-        return  ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
+    @PostMapping("/{idUsuario}")
+    public ResponseEntity<String> crearUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long idUsuario) {
+        try {
+            Usuario usuario = usuarioService.crearUsuario(idUsuario,usuarioRequestDTO );
+            return ResponseEntity.status(HttpStatus.CREATED).body("usuario creado correctamente");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
 
     }
     @GetMapping
     public List<UsuarioDTO> listarUsuarios() {
         return usuarioService.listarUsuarios();
     }
+
+
+
+    @DeleteMapping("{idSolicitante}/{id}")
+    public ResponseEntity<String> eliminarUsuario(@PathVariable Long id, @PathVariable Long idSolicitante) {
+        String mensaje = "";
+        try {
+            mensaje = usuarioService.eliminarUsuario(id,idSolicitante);
+
+            return ResponseEntity.status(HttpStatus.OK).body(mensaje);
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 
 
 }

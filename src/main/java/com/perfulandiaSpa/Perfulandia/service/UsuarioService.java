@@ -22,7 +22,26 @@ public class UsuarioService {
 
     @Autowired
     private RolRepository rolRepository;
-    public Usuario crearUsuario(UsuarioRequestDTO usuarioRequestDTO) {
+
+    public void validacionDePermisos(Long idUsuario) {
+        if (usuarioRepository.count() == 0){
+            return;
+        }
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+        String tipoRol = usuario.getRol().getTipoRol();
+        if ("ADMIN".equalsIgnoreCase(tipoRol)) {
+            return;
+        }
+        for (Permiso permiso :usuario.getRol().getPermisos()){
+            if("CREAR_USUARIO".equalsIgnoreCase(permiso.getNombrePermiso())){
+                return;
+            }
+        }
+        throw new EntityNotFoundException("El usuario no tiene los permisos");
+    }
+    public Usuario crearUsuario(Long idUsuario,UsuarioRequestDTO usuarioRequestDTO) {
+        validacionDePermisos(idUsuario);
         Usuario usuario = new Usuario();
         usuario.setNombre(usuarioRequestDTO.getNombre());
         usuario.setApellido(usuarioRequestDTO.getApellido());
@@ -37,6 +56,7 @@ public class UsuarioService {
         usuario.setRol(rol.get());
         return usuarioRepository.save(usuario);
     }
+
 
     public List<UsuarioDTO> listarUsuarios() {
         List<Usuario> usuarios = usuarioRepository.findAll();
@@ -60,4 +80,65 @@ public class UsuarioService {
         }
         return usuarioDTOS;
     }
+
+
+    private void validarPermisoEliminarUsuario(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario solicitante no encontrado"));
+
+        String tipoRol = usuario.getRol().getTipoRol();
+        if ("ADMIN".equalsIgnoreCase(tipoRol)) {
+            return;
+        }
+        for (Permiso permiso : usuario.getRol().getPermisos()){
+            if ("ELIMINAR_USUARIO".equalsIgnoreCase(permiso.getNombrePermiso())){
+                return;
+            }
+        }
+        throw new EntityNotFoundException("El usuario no tiene los permisos para eliminar usuarios");
+    }
+
+
+    public String eliminarUsuario(Long idUsuario, Long idSolicitante) {
+        validarPermisoEliminarUsuario(idSolicitante);
+        usuarioRepository.deleteById(idUsuario);
+        return "Usuario eliminado";
+    }
+
+
+    private void validarPermisoEditar(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario solicitante no encontrado"));
+
+        String tipoRol = usuario.getRol().getTipoRol();
+        if ("ADMIN".equalsIgnoreCase(tipoRol)) {
+            return;
+        }
+        for (Permiso permiso : usuario.getRol().getPermisos()){
+            if ("ELIMINAR_USUARIO".equalsIgnoreCase(permiso.getNombrePermiso())){
+                return;
+            }
+        }
+        throw new EntityNotFoundException("El usuario no tiene los permisos para editar usuarios");
+    }
+
+    public Usuario editarUsuario(Long idSolicitante, Long idEditar, UsuarioRequestDTO usuarioRequestDTO) {
+        validarPermisoEditar(idSolicitante);
+        Usuario usuario = usuarioRepository.findById(idEditar)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario a editar no encontrado"));
+
+        usuario.setNombre(usuarioRequestDTO.getNombre());
+        usuario.setApellido(usuarioRequestDTO.getApellido());
+        usuario.setRun(usuarioRequestDTO.getRun());
+        usuario.setCorreo(usuarioRequestDTO.getCorreo());
+        usuario.setFechaNacimiento(usuarioRequestDTO.getFechaNacimiento());
+        usuario.setActivo(usuarioRequestDTO.isActivo());
+        Rol rol = rolRepository.findById(usuarioRequestDTO.getRolId())
+                .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado"));
+        usuario.setRol(rol);
+        return usuarioRepository.save(usuario);
+    }
+
+
+
 }
