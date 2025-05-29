@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/v1/usuario")
+@RequestMapping("/api/v1/usuarios")
 @RestController
 
 public class UsuarioController {
@@ -22,9 +22,10 @@ public class UsuarioController {
 
 
     @PostMapping
-    public ResponseEntity<Usuario> crearUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
+    public ResponseEntity<UsuarioDTO> crearUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO) {
         Usuario usuario = usuarioService.crearUsuario(usuarioRequestDTO);
-        return  ResponseEntity.ok(usuario);
+        UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
 
     }
     @GetMapping
