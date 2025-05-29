@@ -39,6 +39,16 @@ public class UsuarioController {
         return usuarioService.listarUsuarios();
     }
 
+    @PutMapping("/{idSolicitante}/{idEditar}")
+    public ResponseEntity<?> editarUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long idSolicitante, @PathVariable Long idEditar ) {
+        try {
+            UsuarioDTO usuarioDTO = usuarioService.editarUsuario(idSolicitante,idEditar, usuarioRequestDTO);
+            return ResponseEntity.ok(usuarioDTO);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 
 
     @DeleteMapping("{idSolicitante}/{id}")
@@ -53,6 +63,7 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+    
 
 
 

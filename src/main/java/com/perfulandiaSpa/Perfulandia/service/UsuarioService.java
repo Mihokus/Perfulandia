@@ -29,6 +29,9 @@ public class UsuarioService {
         }
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+        if (!usuario.isActivo()) {
+            throw new EntityNotFoundException("El usuario está desactivado y no puede realizar acciones");
+        }
         String tipoRol = usuario.getRol().getTipoRol();
         if ("ADMIN".equalsIgnoreCase(tipoRol)) {
             return;
@@ -85,7 +88,9 @@ public class UsuarioService {
     private void validarPermisoEliminarUsuario(Long idUsuario) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario solicitante no encontrado"));
-
+        if (!usuario.isActivo()) {
+            throw new EntityNotFoundException("El usuario está desactivado y no puede realizar acciones");
+        }
         String tipoRol = usuario.getRol().getTipoRol();
         if ("ADMIN".equalsIgnoreCase(tipoRol)) {
             return;
@@ -109,7 +114,9 @@ public class UsuarioService {
     private void validarPermisoEditar(Long idUsuario) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario solicitante no encontrado"));
-
+        if (!usuario.isActivo()) {
+            throw new EntityNotFoundException("El usuario está desactivado y no puede realizar acciones");
+        }
         String tipoRol = usuario.getRol().getTipoRol();
         if ("ADMIN".equalsIgnoreCase(tipoRol)) {
             return;
@@ -122,7 +129,7 @@ public class UsuarioService {
         throw new EntityNotFoundException("El usuario no tiene los permisos para editar usuarios");
     }
 
-    public Usuario editarUsuario(Long idSolicitante, Long idEditar, UsuarioRequestDTO usuarioRequestDTO) {
+    public UsuarioDTO editarUsuario(Long idSolicitante, Long idEditar, UsuarioRequestDTO usuarioRequestDTO) {
         validarPermisoEditar(idSolicitante);
         Usuario usuario = usuarioRepository.findById(idEditar)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario a editar no encontrado"));
@@ -135,8 +142,8 @@ public class UsuarioService {
         usuario.setActivo(usuarioRequestDTO.isActivo());
         Rol rol = rolRepository.findById(usuarioRequestDTO.getRolId())
                 .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado"));
-        usuario.setRol(rol);
-        return usuarioRepository.save(usuario);
+        Usuario usuarioActualizado = usuarioRepository.save(usuario);
+        return new UsuarioDTO(usuarioActualizado);
     }
 
 
