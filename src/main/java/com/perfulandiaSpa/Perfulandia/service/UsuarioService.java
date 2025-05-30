@@ -137,7 +137,6 @@ public class UsuarioService {
         validarPermisoEditar(idSolicitante);
         Usuario usuario = usuarioRepository.findById(idEditar)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario a editar no encontrado"));
-
         usuario.setNombre(usuarioRequestDTO.getNombre());
         usuario.setApellido(usuarioRequestDTO.getApellido());
         usuario.setRun(usuarioRequestDTO.getRun());

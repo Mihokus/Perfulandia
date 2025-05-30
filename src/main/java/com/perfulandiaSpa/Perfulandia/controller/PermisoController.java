@@ -16,7 +16,7 @@ public class PermisoController {
     @Autowired
     private PermisoService permisoService;
 
-    @PostMapping("/crearPermisos/{idUsuario}")
+    @PostMapping("/{idUsuario}")
     public ResponseEntity<PermisoDTO> crearPermiso(@RequestBody PermisoRequestDTO permisoRequestDTO, @PathVariable Long idUsuario) {
         Permiso permiso = permisoService.crearPermiso(permisoRequestDTO, idUsuario);
         PermisoDTO permisoDTO = new PermisoDTO(permiso);

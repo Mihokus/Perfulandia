@@ -20,19 +20,11 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
     /*
-    {
-        "nombre": "",
-            "apellido": "",
-            "run": "",
-            "correo": "",
-            "fechaNacimiento": "2001-05-29T02:42:38.881+00:00",
-            "activo": ,
-            "rolId":
-    }
+      "fechaNacimiento": "2001-05-29T02:42:38.881+00:00",
     */
 
 
-    @PostMapping("/crearUsuarios/{idUsuario}")
+    @PostMapping("/{idUsuario}")
     public ResponseEntity<String> crearUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long idUsuario) {
         try {
             Usuario usuario = usuarioService.crearUsuario(idUsuario,usuarioRequestDTO );
@@ -44,7 +36,7 @@ public class UsuarioController {
 
 
     }
-    @GetMapping("/listarUsuarios")
+    @GetMapping("/listarUsuario")
     public List<UsuarioDTO> listarUsuarios() {
         return usuarioService.listarUsuarios();
     }
@@ -54,7 +46,7 @@ public class UsuarioController {
         UsuarioDTO usuarioDTO = usuarioService.obtenerUsuarioPorId(idUsuario);
         return ResponseEntity.ok(usuarioDTO);
     }
-    @PutMapping("/editarUsuarios/{idSolicitante}/{idEditar}")
+    @PutMapping("/{idSolicitante}/{idEditar}")
     public ResponseEntity<?> editarUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long idSolicitante, @PathVariable Long idEditar ) {
         try {
             UsuarioDTO usuarioDTO = usuarioService.editarUsuario(idSolicitante,idEditar, usuarioRequestDTO);
@@ -63,22 +55,12 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-    /*
-    {
-  "nombre": "",
-  "apellido": "",
-  "run": "",
-  "correo": "",
-  "fechaNacimiento": "2025-05-29",
-  "activo": ,
-  "rolId": ,
-  "permiso": []
-}
-     */
 
 
 
-    @DeleteMapping("/eliminarUsuarios/{idSolicitante}/{id}")
+
+
+    @DeleteMapping("/{idSolicitante}/{id}")
     public ResponseEntity<String> eliminarUsuario(@PathVariable Long id, @PathVariable Long idSolicitante) {
         String mensaje = "";
         try {

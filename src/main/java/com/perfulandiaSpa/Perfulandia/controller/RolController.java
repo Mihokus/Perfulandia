@@ -18,7 +18,7 @@ public class RolController {
     @Autowired
     private RolService rolService;
 
-    @PostMapping("/crearRol/{idUsuario}")
+    @PostMapping("/{idUsuario}")
     public ResponseEntity<RolDTO> crearRol(@RequestBody RolRequestDTO rolRequestDTO, @PathVariable Long idUsuario) {
         Rol rolNuevo =rolService.crearRol(rolRequestDTO,idUsuario);
         RolDTO rolDTO = new RolDTO(rolNuevo);
