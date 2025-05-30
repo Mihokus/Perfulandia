@@ -19,10 +19,20 @@ import java.util.List;
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
+    /*
+    {
+        "nombre": "Juan",
+            "apellido": "Perez",
+            "run": "341138-9",
+            "correo": "juan.perez@mail.com",
+            "fechaNacimiento": "2001-05-29T02:42:38.881+00:00",
+            "activo": true,
+            "rolId":3
+    }
+    */
 
 
-
-    @PostMapping("/{idUsuario}")
+    @PostMapping("/crearUsuarios/{idUsuario}")
     public ResponseEntity<String> crearUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long idUsuario) {
         try {
             Usuario usuario = usuarioService.crearUsuario(idUsuario,usuarioRequestDTO );
@@ -34,12 +44,12 @@ public class UsuarioController {
 
 
     }
-    @GetMapping
+    @GetMapping("/listarUsuarios")
     public List<UsuarioDTO> listarUsuarios() {
         return usuarioService.listarUsuarios();
     }
 
-    @PutMapping("/{idSolicitante}/{idEditar}")
+    @PutMapping("/editarUsuarios/{idSolicitante}/{idEditar}")
     public ResponseEntity<?> editarUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long idSolicitante, @PathVariable Long idEditar ) {
         try {
             UsuarioDTO usuarioDTO = usuarioService.editarUsuario(idSolicitante,idEditar, usuarioRequestDTO);
@@ -51,7 +61,7 @@ public class UsuarioController {
 
 
 
-    @DeleteMapping("{idSolicitante}/{id}")
+    @DeleteMapping("/eliminarUsuarios/{idSolicitante}/{id}")
     public ResponseEntity<String> eliminarUsuario(@PathVariable Long id, @PathVariable Long idSolicitante) {
         String mensaje = "";
         try {

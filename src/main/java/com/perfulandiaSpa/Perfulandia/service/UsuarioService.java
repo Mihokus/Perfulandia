@@ -122,7 +122,7 @@ public class UsuarioService {
             return;
         }
         for (Permiso permiso : usuario.getRol().getPermisos()){
-            if ("ELIMINAR_USUARIO".equalsIgnoreCase(permiso.getNombrePermiso())){
+            if ("EDITAR_USUARIO".equalsIgnoreCase(permiso.getNombrePermiso())){
                 return;
             }
         }
@@ -142,6 +142,16 @@ public class UsuarioService {
         usuario.setActivo(usuarioRequestDTO.isActivo());
         Rol rol = rolRepository.findById(usuarioRequestDTO.getRolId())
                 .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado"));
+
+        Set<Permiso> permisos = new HashSet<>();
+        for (Long permisoId : usuarioRequestDTO.ge()) {
+            Permiso permiso = permisoRepository.findById(permisoId)
+                    .orElseThrow(() -> new EntityNotFoundException("Permiso no encontrado: " + permisoId));
+            permisos.add(permiso);
+        }
+        rol.setPermisos(permisos);
+
+        usuario.setRol(rol);
         Usuario usuarioActualizado = usuarioRepository.save(usuario);
         return new UsuarioDTO(usuarioActualizado);
     }

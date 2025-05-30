@@ -2,7 +2,10 @@ package com.perfulandiaSpa.Perfulandia.service;
 
 import com.perfulandiaSpa.Perfulandia.dto.request.PermisoRequestDTO;
 import com.perfulandiaSpa.Perfulandia.model.Permiso;
+import com.perfulandiaSpa.Perfulandia.model.Usuario;
 import com.perfulandiaSpa.Perfulandia.repository.PermisoRepository;
+import com.perfulandiaSpa.Perfulandia.repository.UsuarioRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +13,32 @@ import org.springframework.stereotype.Service;
 public class PermisoService {
     @Autowired
     private PermisoRepository permisoRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    public Permiso crearPermiso (PermisoRequestDTO permisoRequestDTO) {
+    public void validacionDePermisosCrearPermiso(Long idUsuario) {
+        if (usuarioRepository.count() == 0){
+            return;
+        }
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+        if (!usuario.isActivo()) {
+            throw new EntityNotFoundException("El usuario está desactivado y no puede realizar acciones");
+        }
+        String tipoRol = usuario.getRol().getTipoRol();
+        if ("ADMIN".equalsIgnoreCase(tipoRol)) {
+            return;
+        }
+        for (Permiso permiso :usuario.getRol().getPermisos()){
+            if("CREAR_PERMISO".equalsIgnoreCase(permiso.getNombrePermiso())){
+                return;
+            }
+        }
+        throw new EntityNotFoundException("El usuario no tiene los permisos");
+    }
+
+    public Permiso crearPermiso (PermisoRequestDTO permisoRequestDTO, Long idUsuario) {
+        validacionDePermisosCrearPermiso(idUsuario);
         Permiso permiso = new Permiso();
         permiso.setNombrePermiso(permisoRequestDTO.getNombrePermiso());
         return permisoRepository.save(permiso);

@@ -3,6 +3,7 @@ package com.perfulandiaSpa.Perfulandia.dto.request;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Set;
 
 @Data
 public class UsuarioRequestDTO {
@@ -14,4 +15,6 @@ public class UsuarioRequestDTO {
     private Date fechaNacimiento;
     private boolean activo;
     private Long rolId;
+    Set
+
 }
