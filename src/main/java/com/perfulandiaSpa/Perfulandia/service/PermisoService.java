@@ -1,6 +1,7 @@
 package com.perfulandiaSpa.Perfulandia.service;
 
 import com.perfulandiaSpa.Perfulandia.dto.request.PermisoRequestDTO;
+import com.perfulandiaSpa.Perfulandia.dto.response.PermisoDTO;
 import com.perfulandiaSpa.Perfulandia.model.Permiso;
 import com.perfulandiaSpa.Perfulandia.model.Usuario;
 import com.perfulandiaSpa.Perfulandia.repository.PermisoRepository;
@@ -8,6 +9,8 @@ import com.perfulandiaSpa.Perfulandia.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PermisoService {
@@ -43,5 +46,8 @@ public class PermisoService {
         permiso.setNombrePermiso(permisoRequestDTO.getNombrePermiso());
         return permisoRepository.save(permiso);
 
+    }
+    public List<PermisoDTO> listaPermiso() {
+        return permisoRepository.listaPermisos();
     }
 }

@@ -21,13 +21,13 @@ public class UsuarioController {
     private UsuarioService usuarioService;
     /*
     {
-        "nombre": "Juan",
-            "apellido": "Perez",
-            "run": "341138-9",
-            "correo": "juan.perez@mail.com",
+        "nombre": "",
+            "apellido": "",
+            "run": "",
+            "correo": "",
             "fechaNacimiento": "2001-05-29T02:42:38.881+00:00",
-            "activo": true,
-            "rolId":3
+            "activo": ,
+            "rolId":
     }
     */
 
@@ -49,6 +49,11 @@ public class UsuarioController {
         return usuarioService.listarUsuarios();
     }
 
+    @GetMapping("/{idUsuario}")
+    public ResponseEntity<UsuarioDTO> obtenerUsuarioPorId(@PathVariable Long idUsuario) {
+        UsuarioDTO usuarioDTO = usuarioService.obtenerUsuarioPorId(idUsuario);
+        return ResponseEntity.ok(usuarioDTO);
+    }
     @PutMapping("/editarUsuarios/{idSolicitante}/{idEditar}")
     public ResponseEntity<?> editarUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long idSolicitante, @PathVariable Long idEditar ) {
         try {
@@ -58,6 +63,18 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+    /*
+    {
+  "nombre": "",
+  "apellido": "",
+  "run": "",
+  "correo": "",
+  "fechaNacimiento": "2025-05-29",
+  "activo": ,
+  "rolId": ,
+  "permiso": []
+}
+     */
 
 
 

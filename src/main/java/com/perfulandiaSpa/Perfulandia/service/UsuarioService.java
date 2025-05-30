@@ -5,6 +5,7 @@ import com.perfulandiaSpa.Perfulandia.dto.response.UsuarioDTO;
 import com.perfulandiaSpa.Perfulandia.model.Permiso;
 import com.perfulandiaSpa.Perfulandia.model.Rol;
 import com.perfulandiaSpa.Perfulandia.model.Usuario;
+import com.perfulandiaSpa.Perfulandia.repository.PermisoRepository;
 import com.perfulandiaSpa.Perfulandia.repository.RolRepository;
 import com.perfulandiaSpa.Perfulandia.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +23,9 @@ public class UsuarioService {
 
     @Autowired
     private RolRepository rolRepository;
+
+    @Autowired
+    private PermisoRepository permisoRepository;
 
     public void validacionDePermisos(Long idUsuario) {
         if (usuarioRepository.count() == 0){
@@ -144,9 +148,9 @@ public class UsuarioService {
                 .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado"));
 
         Set<Permiso> permisos = new HashSet<>();
-        for (Long permisoId : usuarioRequestDTO.ge()) {
+        for (Long permisoId : usuarioRequestDTO.getPermiso()) {
             Permiso permiso = permisoRepository.findById(permisoId)
-                    .orElseThrow(() -> new EntityNotFoundException("Permiso no encontrado: " + permisoId));
+                    .orElseThrow(() -> new EntityNotFoundException("Permiso no encontrado"));
             permisos.add(permiso);
         }
         rol.setPermisos(permisos);
@@ -154,6 +158,11 @@ public class UsuarioService {
         usuario.setRol(rol);
         Usuario usuarioActualizado = usuarioRepository.save(usuario);
         return new UsuarioDTO(usuarioActualizado);
+    }
+
+    public UsuarioDTO obtenerUsuarioPorId(Long idUsuario) {
+        return usuarioRepository.findUsuarioDTOById(idUsuario)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
     }
 
 

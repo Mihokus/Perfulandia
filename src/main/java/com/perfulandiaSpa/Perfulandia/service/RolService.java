@@ -1,6 +1,7 @@
 package com.perfulandiaSpa.Perfulandia.service;
 
 import com.perfulandiaSpa.Perfulandia.dto.request.RolRequestDTO;
+import com.perfulandiaSpa.Perfulandia.dto.response.RolDTO;
 import com.perfulandiaSpa.Perfulandia.model.Permiso;
 import com.perfulandiaSpa.Perfulandia.model.Rol;
 import com.perfulandiaSpa.Perfulandia.model.Usuario;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 @Service
@@ -57,5 +59,8 @@ public class RolService {
         return rolRepository.save(rol);
         }
 
+    public List<RolDTO> listaRoles() {
+        return rolRepository.buscarRoles();
+    }
 
 }

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/roles")
 
@@ -21,6 +23,11 @@ public class RolController {
         Rol rolNuevo =rolService.crearRol(rolRequestDTO,idUsuario);
         RolDTO rolDTO = new RolDTO(rolNuevo);
         return ResponseEntity.status(HttpStatus.CREATED).body(rolDTO);
+    }
+    @GetMapping
+    public ResponseEntity<List<RolDTO>> listaRoles() {
+        List<RolDTO> roles = rolService.listaRoles();
+        return ResponseEntity.ok(roles);
     }
 
 }

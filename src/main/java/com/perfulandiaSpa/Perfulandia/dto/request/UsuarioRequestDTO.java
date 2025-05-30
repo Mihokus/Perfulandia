@@ -15,6 +15,6 @@ public class UsuarioRequestDTO {
     private Date fechaNacimiento;
     private boolean activo;
     private Long rolId;
-    Set
+    private Set<Long> permiso;
 
 }

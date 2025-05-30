@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/api/v1/permisos")
 @RestController
 public class PermisoController {
@@ -21,6 +23,13 @@ public class PermisoController {
         return ResponseEntity.ok(permisoDTO);
 
     }
+
+    @GetMapping
+    public ResponseEntity<List<PermisoDTO>> listaPermisos() {
+        List<PermisoDTO> permisos = permisoService.listaPermiso();
+        return ResponseEntity.ok(permisos);
+    }
+
 
 
 }
