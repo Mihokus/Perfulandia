@@ -5,6 +5,8 @@ import com.perfulandiaSpa.Perfulandia.dto.response.UsuarioDTO;
 import com.perfulandiaSpa.Perfulandia.model.Usuario;
 import com.perfulandiaSpa.Perfulandia.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -26,6 +28,10 @@ public class UsuarioController {
 
     @PostMapping("/{idUsuario}")
     @Operation(summary = "Crear un nuevo usuario", description = "Permite crear un nuevo usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Usuario creado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta o datos inválidos")
+    })
     public ResponseEntity<String> crearUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long idUsuario) {
         try {
             Usuario usuario = usuarioService.crearUsuario(idUsuario,usuarioRequestDTO );
@@ -38,30 +44,36 @@ public class UsuarioController {
 
     @GetMapping("/listarUsuario")
     @Operation(summary = "Obtener todos los usuarios", description = "Obtienes una lista con todos los usuarios creados")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de usuarios generada correctamente"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     public List<UsuarioDTO> listarUsuarios() {
         return usuarioService.listarUsuarios();
     }
 
     @GetMapping("/{idUsuario}")
-    @Operation(summary = "Obtener un usuario por su Id", description = "Obtienes un usuario en especifico ingresando su Id")
+    @Operation(summary = "Obtener un usuario por su Id", description = "Obtienes un usuario en específico ingresando su Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario encontrado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     public ResponseEntity<UsuarioDTO> obtenerUsuarioPorId(@PathVariable Long idUsuario) {
-        UsuarioDTO usuarioDTO = usuarioService.obtenerUsuarioPorId(idUsuario);
-        return ResponseEntity.ok(usuarioDTO);
-    }
-
-    @PutMapping("/{idSolicitante}/{idEditar}")
-    @Operation(summary = "Editar usuario", description = "Permite editar las caracteristicas de un usuario en especifico ingresando su Id")
-    public ResponseEntity<?> editarUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long idSolicitante, @PathVariable Long idEditar ) {
         try {
-            UsuarioDTO usuarioDTO = usuarioService.editarUsuario(idSolicitante,idEditar, usuarioRequestDTO);
+            UsuarioDTO usuarioDTO = usuarioService.obtenerUsuarioPorId(idUsuario);
             return ResponseEntity.ok(usuarioDTO);
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @DeleteMapping("/{idSolicitante}/{id}")
     @Operation(summary = "Eliminar usuario", description = "Eliminas un usuario en especifico ingresando su Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario eliminado correctamente"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     public ResponseEntity<String> eliminarUsuario(@PathVariable Long id, @PathVariable Long idSolicitante) {
         String mensaje = "";
         try {
