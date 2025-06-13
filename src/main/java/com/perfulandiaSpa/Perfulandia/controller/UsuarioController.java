@@ -6,12 +6,15 @@ import com.perfulandiaSpa.Perfulandia.model.Usuario;
 import com.perfulandiaSpa.Perfulandia.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,7 +64,10 @@ public class UsuarioController {
     @GetMapping("/{idUsuario}")
     @Operation(summary = "Obtener un usuario por su Id", description = "Obtienes un usuario en específico ingresando su Id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuario encontrado correctamente"),
+            @ApiResponse(responseCode = "200",
+                         description = "Usuario encontrado correctamente",
+                         content = @Content(mediaType = "application/json",
+                                            schema = @Schema(implementation = UsuarioDTO.class))),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
