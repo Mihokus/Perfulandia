@@ -5,6 +5,7 @@ import com.perfulandiaSpa.Perfulandia.dto.response.RolDTO;
 import com.perfulandiaSpa.Perfulandia.model.Rol;
 import com.perfulandiaSpa.Perfulandia.service.RolService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,7 +32,9 @@ public class RolController {
             @ApiResponse(responseCode = "400", description = "Solicitud no disponible"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    public ResponseEntity<RolDTO> crearRol(@RequestBody RolRequestDTO rolRequestDTO, @PathVariable Long idUsuario) {
+    public ResponseEntity<RolDTO> crearRol(@RequestBody RolRequestDTO rolRequestDTO,
+                                           @Parameter(description = "ID del usuario que desea crear el rol", example = "1")
+                                           @PathVariable Long idUsuario) {
         Rol rolNuevo =rolService.crearRol(rolRequestDTO,idUsuario);
         RolDTO rolDTO = new RolDTO(rolNuevo);
         return ResponseEntity.status(HttpStatus.CREATED).body(rolDTO);

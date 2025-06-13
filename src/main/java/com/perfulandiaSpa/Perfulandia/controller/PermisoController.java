@@ -5,6 +5,7 @@ import com.perfulandiaSpa.Perfulandia.dto.response.PermisoDTO;
 import com.perfulandiaSpa.Perfulandia.model.Permiso;
 import com.perfulandiaSpa.Perfulandia.service.PermisoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +29,9 @@ public class PermisoController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @Operation(summary = "Crear un nuevo permiso", description = "Permite crear un nuevo permiso")
-    public ResponseEntity<PermisoDTO> crearPermiso(@RequestBody PermisoRequestDTO permisoRequestDTO, @PathVariable Long idUsuario) {
+    public ResponseEntity<PermisoDTO> crearPermiso(@RequestBody PermisoRequestDTO permisoRequestDTO,
+                                                   @Parameter(description = "ID del usuario que desea crear el permiso", example = "1")
+                                                   @PathVariable Long idUsuario) {
         Permiso permiso = permisoService.crearPermiso(permisoRequestDTO, idUsuario);
         PermisoDTO permisoDTO = new PermisoDTO(permiso);
         return ResponseEntity.ok(permisoDTO);
