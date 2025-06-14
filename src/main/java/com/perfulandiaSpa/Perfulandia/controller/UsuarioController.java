@@ -6,19 +6,21 @@ import com.perfulandiaSpa.Perfulandia.model.Usuario;
 import com.perfulandiaSpa.Perfulandia.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.security.Principal;
+
+
 import java.util.List;
 
 @RequestMapping("/api/v1/usuarios")
@@ -35,11 +37,30 @@ public class UsuarioController {
     @Operation(summary = "Crear un nuevo usuario", description = "Permite crear un nuevo usuario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Usuario creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta o datos inválidos")
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta o datos inválidos"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    public ResponseEntity<String> crearUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO,
+    public ResponseEntity<String> crearUsuario(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+                                               description = "Datos del usuario a crear",
+                                               required = true,
+                                               content = @Content(mediaType ="application/json",
+                                               schema = @Schema(implementation = UsuarioRequestDTO.class),
+                                               examples = @ExampleObject(
+                                               name = "Ejemplo del usuario",
+                                               value = "{\"Run\":\"20584564-9\"," +
+                                                       "\"Nombre\":\"Sebastian\"," +
+                                                       "\"Apellido\":\"Rodriguez\"," +
+                                                       "\"Correo\":\"Sebatian503@gmail.com\"," +
+                                                       "\"FechaNacimiento\": \"2000-05-23\"," +
+                                                       "\"Activo\":true," +
+                                                       "\"RolId\": 1}"
+
+                                               )
+                                                       ))
+                                               @RequestBody UsuarioRequestDTO usuarioRequestDTO,
                                                @Parameter(description = "ID del usuario que crea el nuevo usuario", example = "1")
-                                               @PathVariable Long idUsuario) {
+                                               @PathVariable Long idUsuario)
+    {
         try {
             Usuario usuario = usuarioService.crearUsuario(idUsuario,usuarioRequestDTO );
             return ResponseEntity.status(HttpStatus.CREATED).body("usuario creado correctamente");
@@ -50,16 +71,19 @@ public class UsuarioController {
     }
 
 
+
+
     @GetMapping("/listarUsuario")
     @Operation(summary = "Obtener todos los usuarios", description = "Obtienes una lista con todos los usuarios creados")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de usuarios generada correctamente"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(responseCode = "200", description = "Lista de usuarios generada correctamente",
+                         content = @Content(mediaType = "application/json",
+                         array = @ArraySchema(schema = @Schema(implementation = UsuarioDTO.class))))
     })
-    public List<UsuarioDTO> listarUsuarios() {
-        return usuarioService.listarUsuarios();
+    public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
+        List<UsuarioDTO> usuarios = usuarioService.listarUsuarios();
+        return ResponseEntity.ok(usuarios);
     }
-
 
     @GetMapping("/{idUsuario}")
     @Operation(summary = "Obtener un usuario por su Id", description = "Obtienes un usuario en específico ingresando su Id")
@@ -69,7 +93,6 @@ public class UsuarioController {
                          content = @Content(mediaType = "application/json",
                                             schema = @Schema(implementation = UsuarioDTO.class))),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<UsuarioDTO> obtenerUsuarioPorId(@Parameter(description = "ID del usuario que desea buscar", example = "1")
                                                           @PathVariable Long idUsuario) {
@@ -87,11 +110,11 @@ public class UsuarioController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuario eliminado correctamente"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+
     })
     public ResponseEntity<String> eliminarUsuario(@Parameter(description = "ID del usuario a eliminar", example = "2")
                                                   @PathVariable Long id,
-                                                  @Parameter(description = "ID del usuario solicitante que realiza desea realizar la eliminacion", example = "1")
-                                                  @PathVariable Long idSolicitante) {
+                                                  @Parameter(description = "ID del usuario solicitante que realiza desea realizar la eliminacion", example = "1") @PathVariable Long idSolicitante) {
         String mensaje = "";
         try {
             mensaje = usuarioService.eliminarUsuario(id,idSolicitante);
