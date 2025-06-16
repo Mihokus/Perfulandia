@@ -1,5 +1,4 @@
 package com.perfulandiaSpa.Perfulandia.controller;
-
 import com.perfulandiaSpa.Perfulandia.dto.request.UsuarioRequestDTO;
 import com.perfulandiaSpa.Perfulandia.dto.response.UsuarioDTO;
 import com.perfulandiaSpa.Perfulandia.model.Usuario;
@@ -79,20 +78,35 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Lista de usuarios generada correctamente",
                          content = @Content(mediaType = "application/json",
                          array = @ArraySchema(schema = @Schema(implementation = UsuarioDTO.class))))
+
+
+
     })
     public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
         List<UsuarioDTO> usuarios = usuarioService.listarUsuarios();
         return ResponseEntity.ok(usuarios);
     }
 
+
     @GetMapping("/{idUsuario}")
     @Operation(summary = "Obtener un usuario por su Id", description = "Obtienes un usuario en específico ingresando su Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                         description = "Usuario encontrado correctamente",
-                         content = @Content(mediaType = "application/json",
-                                            schema = @Schema(implementation = UsuarioDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Usuario no encontrado"),
+                    description = "Usuario encontrado correctamente",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    name = "EjemploUsuario",
+                                    value = "{\"id\":\"1\","+
+                                            "\"nombre\":\"Juan\"," +
+                                            "\"apellido\":\"Perez\"," +
+                                            "\"correo\":\"juan.perez@mail.com\"," +
+                                            "\"activo\":true," +
+                                            "\"rolId\":1}"
+                            )
+                    )
+            ),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     public ResponseEntity<UsuarioDTO> obtenerUsuarioPorId(@Parameter(description = "ID del usuario que desea buscar", example = "1")
                                                           @PathVariable Long idUsuario) {
@@ -105,10 +119,13 @@ public class UsuarioController {
     }
 
 
+
     @DeleteMapping("/{idSolicitante}/{id}")
     @Operation(summary = "Eliminar usuario", description = "Eliminas un usuario en especifico ingresando su Id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuario eliminado correctamente"),
+            @ApiResponse(responseCode = "200",
+                         description = "Usuario eliminado correctamente",
+                         content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
 
     })
