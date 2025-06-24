@@ -17,9 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestBody;
-
-
-
 import java.util.List;
 
 @RequestMapping("/api/v1/usuarios")
@@ -118,8 +115,16 @@ public class UsuarioController {
         }
     }
 
-
-
+    @PutMapping("/{idSolicitante}/{idEditar}")
+    @Operation(summary = "Editar usuario", description = "Permite editar las caracteristicas de un usuario en especifico ingresando su Id")
+    public ResponseEntity<?> editarUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long idSolicitante, @PathVariable Long idEditar ) {
+        try {
+            UsuarioDTO usuarioDTO = usuarioService.editarUsuario(idSolicitante,idEditar, usuarioRequestDTO);
+            return ResponseEntity.ok(usuarioDTO);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
     @DeleteMapping("/{idSolicitante}/{id}")
     @Operation(summary = "Eliminar usuario", description = "Eliminas un usuario en especifico ingresando su Id")
     @ApiResponses(value = {

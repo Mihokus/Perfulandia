@@ -2,7 +2,6 @@ package com.perfulandiaSpa.Perfulandia.controller;
 
 import com.perfulandiaSpa.Perfulandia.dto.request.PermisoRequestDTO;
 import com.perfulandiaSpa.Perfulandia.dto.response.PermisoDTO;
-import com.perfulandiaSpa.Perfulandia.dto.response.RolDTO;
 import com.perfulandiaSpa.Perfulandia.model.Permiso;
 import com.perfulandiaSpa.Perfulandia.service.PermisoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,4 +51,6 @@ public class PermisoController {
         List<PermisoDTO> permisos = permisoService.listaPermiso();
         return ResponseEntity.ok(permisos);
     }
+
+
 }

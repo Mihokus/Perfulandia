@@ -50,7 +50,6 @@ public class UsuarioDTO {
         this.permiso = permisos;
 
 }
-
     public UsuarioDTO(Long id, String run, String nombre, String apellido, String correo, Date fechaNacimiento, boolean activo, String rol ,  Set<String>permiso){
         this.id = id;
         this.nombre = nombre;

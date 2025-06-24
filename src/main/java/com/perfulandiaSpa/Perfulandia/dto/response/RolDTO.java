@@ -1,15 +1,17 @@
 package com.perfulandiaSpa.Perfulandia.dto.response;
-
 import com.perfulandiaSpa.Perfulandia.model.Permiso;
 import com.perfulandiaSpa.Perfulandia.model.Rol;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 import java.util.HashSet;
 import java.util.Set;
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Schema(description = "DTO Roles")
+
 public class RolDTO {
     @Schema(description = "ID de rol", example = "1")
     private long id;
