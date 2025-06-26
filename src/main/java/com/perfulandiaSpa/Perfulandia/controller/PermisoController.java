@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,19 +25,24 @@ import java.util.List;
 public class PermisoController {
     @Autowired
     private PermisoService permisoService;
-
     @PostMapping("/{idUsuario}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Permiso creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud invalida"),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado o sin permisos"),
     })
     @Operation(summary = "Crear un nuevo permiso", description = "Permite crear un nuevo permiso")
-    public ResponseEntity<PermisoDTO> crearPermiso(@RequestBody PermisoRequestDTO permisoRequestDTO,
-                                                   @Parameter(description = "ID del usuario que desea crear el permiso", example = "1")
-                                                   @PathVariable Long idUsuario) {
-        Permiso permiso = permisoService.crearPermiso(permisoRequestDTO, idUsuario);
-        PermisoDTO permisoDTO = new PermisoDTO(permiso);
-        return ResponseEntity.status(HttpStatus.CREATED).body(permisoDTO);
+    public ResponseEntity<?> crearPermiso(@RequestBody PermisoRequestDTO permisoRequestDTO,
+                                          @Parameter(description = "ID del usuario que desea crear el permiso", example = "1")
+                                          @PathVariable Long idUsuario) {
+        try {
+            PermisoDTO permisoDTO = permisoService.crearPermiso(permisoRequestDTO, idUsuario);
+            return ResponseEntity.status(HttpStatus.CREATED).body(permisoDTO);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error inesperado: " + ex.getMessage());
+        }
     }
 
     @GetMapping

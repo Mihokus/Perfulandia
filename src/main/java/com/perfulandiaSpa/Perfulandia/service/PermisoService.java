@@ -39,13 +39,14 @@ public class PermisoService {
         throw new EntityNotFoundException("El usuario no tiene los permisos");
     }
 
-    public Permiso crearPermiso (PermisoRequestDTO permisoRequestDTO, Long idUsuario) {
+    public PermisoDTO crearPermiso (PermisoRequestDTO permisoRequestDTO, Long idUsuario) {
         validacionDePermisosCrearPermiso(idUsuario);
         Permiso permiso = new Permiso();
         permiso.setNombrePermiso(permisoRequestDTO.getNombrePermiso());
-        return permisoRepository.save(permiso);
-
+        Permiso permisoGuardado = permisoRepository.save(permiso);
+        return new PermisoDTO(permisoGuardado);
     }
+
     public List<PermisoDTO> listaPermiso() {
         return permisoRepository.listaPermisos();
     }
