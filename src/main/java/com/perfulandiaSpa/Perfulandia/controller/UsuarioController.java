@@ -75,9 +75,6 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Lista de usuarios generada correctamente",
                          content = @Content(mediaType = "application/json",
                          array = @ArraySchema(schema = @Schema(implementation = UsuarioDTO.class))))
-
-
-
     })
     public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
         List<UsuarioDTO> usuarios = usuarioService.listarUsuarios();

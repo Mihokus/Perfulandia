@@ -56,11 +56,10 @@ public class PermisoControllerTest {
         PermisoRequestDTO permisoRequestDTO = new PermisoRequestDTO();
         permisoRequestDTO.setNombrePermiso("CREAR_USUARIO");
 
-        Permiso permisoGuardado = new Permiso();
-        permisoGuardado.setId(1L);
-        permisoGuardado.setNombrePermiso("CREAR_USUARIO");
-
-        when(permisoService.crearPermiso(any(), eq(idUsuario))).thenReturn(permisoGuardado);
+        PermisoDTO permisoDTO = new PermisoDTO();
+        permisoDTO.setId(1L);
+        permisoDTO.setNombrePermiso("CREAR_USUARIO");
+        when(permisoService.crearPermiso(any(), eq(idUsuario))).thenReturn(permisoDTO);
 
         mockMvc.perform(post("/api/v1/permisos/{idUsuario}", idUsuario)
                         .contentType(MediaType.APPLICATION_JSON)

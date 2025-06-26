@@ -5,11 +5,14 @@ import com.perfulandiaSpa.Perfulandia.dto.request.PermisoRequestDTO;
 import com.perfulandiaSpa.Perfulandia.dto.response.PermisoDTO;
 import com.perfulandiaSpa.Perfulandia.service.PermisoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v2/permisos")
+@Tag(name = "Permisos", description = "Operaciones con los permisos")
 public class PermisoControllerV2 {
     @Autowired
     private PermisoService permisoService;
@@ -36,7 +40,16 @@ public class PermisoControllerV2 {
             @ApiResponse(responseCode = "400", description = "Solicitud inválida"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado o sin permisos"),
     })
-    public ResponseEntity<?> crearPermiso(@RequestBody PermisoRequestDTO permisoRequestDTO,
+    public ResponseEntity<?> crearPermiso(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+                                          description = "Datos del permiso a crear",
+                                          required = true,
+                                          content = @Content(mediaType = "application/json",
+                                          schema = @Schema(implementation = PermisoRequestDTO.class),
+                                          examples = @ExampleObject(
+                                          name = "Ejemplo permiso",
+                                          value = "{\"nombrePermiso\":\"CREAR_USUARIO\"}")))
+                                          @RequestBody PermisoRequestDTO permisoRequestDTO,
+                                          @Parameter(description = "ID del usuario que desea crear el permiso", example = "1")
                                           @PathVariable Long idUsuario) {
         try {
             PermisoDTO creado = permisoService.crearPermiso(permisoRequestDTO, idUsuario);

@@ -1,5 +1,6 @@
 package com.perfulandiaSpa.Perfulandia.controller;
 
+import com.perfulandiaSpa.Perfulandia.dto.request.PermisoRequestDTO;
 import com.perfulandiaSpa.Perfulandia.dto.request.RolRequestDTO;
 import com.perfulandiaSpa.Perfulandia.dto.response.RolDTO;
 import com.perfulandiaSpa.Perfulandia.model.Rol;
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -34,9 +36,19 @@ public class RolController {
             @ApiResponse(responseCode = "201", description = "Rol creado correctamente"),
             @ApiResponse(responseCode = "400", description = "Solicitud invalida"),
     })
-    public ResponseEntity<RolDTO> crearRol(@RequestBody RolRequestDTO rolRequestDTO,
+    public ResponseEntity<RolDTO> crearRol(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+                                           description = "Datos del rol a crear",
+                                           required = true,
+                                           content = @Content(mediaType = "application/json",
+                                           schema = @Schema(implementation = RolRequestDTO.class),
+                                           examples = @ExampleObject(
+                                           name = "Ejemplo Rol",
+                                           value = "{\"nombrePermiso\":\"CREAR_USUARIO\","+
+                                                   "\"permisoId\":\"1}")))
+                                           @RequestBody RolRequestDTO rolRequestDTO,
                                            @Parameter(description = "ID del usuario que desea crear el rol", example = "1")
                                            @PathVariable Long idUsuario) {
+
         Rol rolNuevo =rolService.crearRol(rolRequestDTO,idUsuario);
         RolDTO rolDTO = new RolDTO(rolNuevo);
         return ResponseEntity.status(HttpStatus.CREATED).body(rolDTO);

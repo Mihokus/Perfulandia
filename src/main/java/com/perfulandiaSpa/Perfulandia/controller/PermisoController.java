@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -32,9 +33,18 @@ public class PermisoController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado o sin permisos"),
     })
     @Operation(summary = "Crear un nuevo permiso", description = "Permite crear un nuevo permiso")
-    public ResponseEntity<?> crearPermiso(@RequestBody PermisoRequestDTO permisoRequestDTO,
+    public ResponseEntity<?> crearPermiso(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+                                          description = "Datos del permiso a crear",
+                                          required = true,
+                                          content = @Content(mediaType = "application/json",
+                                          schema = @Schema(implementation = PermisoRequestDTO.class),
+                                          examples = @ExampleObject(
+                                          name = "Ejemplo permiso",
+                                          value = "{\"nombrePermiso\":\"CREAR_USUARIO\"}")))
+                                          @RequestBody PermisoRequestDTO permisoRequestDTO,
                                           @Parameter(description = "ID del usuario que desea crear el permiso", example = "1")
-                                          @PathVariable Long idUsuario) {
+                                          @PathVariable Long idUsuario
+    ) {
         try {
             PermisoDTO permisoDTO = permisoService.crearPermiso(permisoRequestDTO, idUsuario);
             return ResponseEntity.status(HttpStatus.CREATED).body(permisoDTO);

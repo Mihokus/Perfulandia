@@ -77,15 +77,15 @@ public class PermisoServiceTest {
         PermisoRequestDTO dto = new PermisoRequestDTO();
         dto.setNombrePermiso("CREAR_USUARIO");
 
-        Permiso permisoMock = new Permiso();
-        permisoMock.setId(1L);
-        permisoMock.setNombrePermiso("CREAR_USUARIO");
+        Permiso permiso = new Permiso();
+        permiso.setId(1L);
+        permiso.setNombrePermiso("CREAR_USUARIO");
 
         when(usuarioRepository.count()).thenReturn(1L);
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(admin));
-        when(permisoRepository.save(any(Permiso.class))).thenReturn(permisoMock);
+        when(permisoRepository.save(any(Permiso.class))).thenReturn(permiso);
 
-        Permiso result = permisoService.crearPermiso(dto, 1L);
+        PermisoDTO result = permisoService.crearPermiso(dto, 1L);
         assertNotNull(result);
         assertEquals("CREAR_USUARIO", result.getNombrePermiso());
     }
