@@ -38,9 +38,9 @@ public class UsuarioControllerV2 {
     @PostMapping(value = "/{idUsuario}", produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(summary = "Crear un nuevo usuario", description = "Permite crear un nuevo usuario")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Usuario creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta o datos inválidos"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(responseCode = "201", description = "Usuario creado correctamente", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta o datos inválidos", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(mediaType = "application/json"))
     })
     public ResponseEntity<?> crearUsuario(@io.swagger.v3.oas.annotations.parameters.RequestBody(
                                                        description = "Datos del usuario a crear",
@@ -92,9 +92,8 @@ public class UsuarioControllerV2 {
     @GetMapping(value = "/{idUsuario}", produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(summary = "Obtener un usuario por su Id", description = "Obtienes un usuario en específico ingresando su Id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuario encontrado correctamente",
-                         content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+            @ApiResponse(responseCode = "200", description = "Usuario encontrado correctamente", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content(mediaType = "application/json"))
     })
     public ResponseEntity<EntityModel<UsuarioDTO>> obtenerUsuarioPorId(
             @Parameter(description = "ID del usuario que desea buscar", example = "1")
@@ -131,8 +130,8 @@ public class UsuarioControllerV2 {
     @DeleteMapping("/{idSolicitante}/{id}")
     @Operation(summary = "Eliminar usuario", description = "Eliminas un usuario en específico ingresando su Id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuario eliminado correctamente"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(responseCode = "200", description = "Usuario eliminado correctamente", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(mediaType = "application/json"))
     })
     public ResponseEntity<String> eliminarUsuario(
             @Parameter(description = "ID del usuario solicitante", example = "1") @PathVariable Long idSolicitante,

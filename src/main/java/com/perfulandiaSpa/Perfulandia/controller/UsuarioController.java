@@ -46,7 +46,7 @@ public class UsuarioController {
                                                examples = @ExampleObject(
                                                name = "Ejemplo del usuario",
                                                value = "{\"run\":\"20584564-9\"," +
-                                                       "\"rombre\":\"Sebastian\"," +
+                                                       "\"nombre\":\"Sebastian\"," +
                                                        "\"apellido\":\"Rodriguez\"," +
                                                        "\"correo\":\"Sebatian503@gmail.com\"," +
                                                        "\"fechaNacimiento\": \"2000-05-23\"," +

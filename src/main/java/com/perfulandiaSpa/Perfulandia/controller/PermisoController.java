@@ -28,9 +28,9 @@ public class PermisoController {
     private PermisoService permisoService;
     @PostMapping("/{idUsuario}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Permiso creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud inválida"),
-            @ApiResponse(responseCode = "404", description = "Usuario no encontrado o sin permisos"),
+            @ApiResponse(responseCode = "201", description = "Permiso creado correctamente", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado o sin permisos", content = @Content(mediaType = "application/json")),
     })
     @Operation(summary = "Crear un nuevo permiso", description = "Permite crear un nuevo permiso")
     public ResponseEntity<?> crearPermiso(@io.swagger.v3.oas.annotations.parameters.RequestBody(

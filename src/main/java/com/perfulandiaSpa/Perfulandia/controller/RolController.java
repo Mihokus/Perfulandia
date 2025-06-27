@@ -33,8 +33,8 @@ public class RolController {
     @PostMapping("/{idUsuario}")
     @Operation(summary = "Crear un nuevo rol", description = "Permite crear un nuevo rol")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Rol creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud invalida"),
+            @ApiResponse(responseCode = "201", description = "Rol creado correctamente", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Solicitud invalida", content = @Content(mediaType = "application/json")),
     })
     public ResponseEntity<RolDTO> crearRol(@io.swagger.v3.oas.annotations.parameters.RequestBody(
                                            description = "Datos del rol a crear",
