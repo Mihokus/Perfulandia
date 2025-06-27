@@ -12,6 +12,6 @@ public class PermisoModelAssemblers implements RepresentationModelAssembler<Perm
     @Override
     public EntityModel<PermisoDTO> toModel(PermisoDTO permisoDTO) {
         return EntityModel.of(permisoDTO,
-                linkTo(methodOn(PermisoControllerV2.class).listaPermisos()).withRel("Permisos"));
+                linkTo(methodOn(PermisoControllerV2.class).listaPermisos()).withRel("ListaPermisos"));
     }
 }

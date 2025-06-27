@@ -13,7 +13,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,9 +34,9 @@ public class UsuarioController {
     @PostMapping("/{idUsuario}")
     @Operation(summary = "Crear un nuevo usuario", description = "Permite crear un nuevo usuario")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Usuario creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta o datos inválidos"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(responseCode = "201", description = "Usuario creado correctamente", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta o datos inválidos", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(mediaType = "application/json"))
     })
     public ResponseEntity<String> crearUsuario(@io.swagger.v3.oas.annotations.parameters.RequestBody(
                                                description = "Datos del usuario a crear",
@@ -43,13 +45,13 @@ public class UsuarioController {
                                                schema = @Schema(implementation = UsuarioRequestDTO.class),
                                                examples = @ExampleObject(
                                                name = "Ejemplo del usuario",
-                                               value = "{\"Run\":\"20584564-9\"," +
-                                                       "\"Nombre\":\"Sebastian\"," +
-                                                       "\"Apellido\":\"Rodriguez\"," +
-                                                       "\"Correo\":\"Sebatian503@gmail.com\"," +
-                                                       "\"FechaNacimiento\": \"2000-05-23\"," +
-                                                       "\"Activo\":true," +
-                                                       "\"RolId\": 1}"
+                                               value = "{\"run\":\"20584564-9\"," +
+                                                       "\"rombre\":\"Sebastian\"," +
+                                                       "\"apellido\":\"Rodriguez\"," +
+                                                       "\"correo\":\"Sebatian503@gmail.com\"," +
+                                                       "\"fechaNacimiento\": \"2000-05-23\"," +
+                                                       "\"activo\":true," +
+                                                       "\"rolId\": 1}"
 
                                                )
                                                        ))
@@ -100,7 +102,7 @@ public class UsuarioController {
                             )
                     )
             ),
-            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content(mediaType = "application/json"))
     })
     public ResponseEntity<UsuarioDTO> obtenerUsuarioPorId(@Parameter(description = "ID del usuario que desea buscar", example = "1")
                                                           @PathVariable Long idUsuario) {
@@ -112,8 +114,14 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/{idSolicitante}/{idEditar}")
+    @PutMapping(value = "/{idSolicitante}/{idEditar}", produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(summary = "Editar usuario", description = "Permite editar las caracteristicas de un usuario en especifico ingresando su Id")
+    @ApiResponses(value = {
+            @ApiResponse (responseCode = "200", description = "Usuario editado correctamente", content = @Content(mediaType = "application/json")),
+            @ApiResponse (responseCode = "400", description = "No se pudo procesar la solicitud", content = @Content(mediaType = "application/json"))
+
+
+    })
     public ResponseEntity<?> editarUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO, @PathVariable Long idSolicitante, @PathVariable Long idEditar ) {
         try {
             UsuarioDTO usuarioDTO = usuarioService.editarUsuario(idSolicitante,idEditar, usuarioRequestDTO);
@@ -128,7 +136,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200",
                          description = "Usuario eliminado correctamente",
                          content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(mediaType = "application/json"))
 
     })
     public ResponseEntity<String> eliminarUsuario(@Parameter(description = "ID del usuario a eliminar", example = "2")

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+//http://localhost:8080/doc/swagger-ui/index.html//
 
 @RequestMapping("/api/v2/usuarios")
 @RestController
@@ -48,13 +49,13 @@ public class UsuarioControllerV2 {
                                                                schema = @Schema(implementation = UsuarioRequestDTO.class),
                                                                examples = @ExampleObject(
                                                                        name = "Ejemplo del usuario",
-                                                                       value = "{\"Run\":\"20584564-9\"," +
-                                                                               "\"Nombre\":\"Sebastian\"," +
-                                                                               "\"Apellido\":\"Rodriguez\"," +
-                                                                               "\"Correo\":\"Sebatian503@gmail.com\"," +
-                                                                               "\"FechaNacimiento\": \"2000-05-23\"," +
-                                                                               "\"Activo\":true," +
-                                                                               "\"RolId\": 1}"
+                                                                       value = "{\"run\":\"20584564-9\"," +
+                                                                               "\"nombre\":\"Sebastian\"," +
+                                                                               "\"apellido\":\"Rodriguez\"," +
+                                                                               "\"correo\":\"Sebatian503@gmail.com\"," +
+                                                                               "\"fechaNacimiento\": \"2000-05-23\"," +
+                                                                               "\"activo\":true," +
+                                                                               "\"rolId\": 1}"
 
                                                                )
                                                        ))
@@ -87,6 +88,7 @@ public class UsuarioControllerV2 {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(modelos);
     }
+
     @GetMapping(value = "/{idUsuario}", produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(summary = "Obtener un usuario por su Id", description = "Obtienes un usuario en específico ingresando su Id")
     @ApiResponses(value = {
@@ -108,6 +110,11 @@ public class UsuarioControllerV2 {
 
     @PutMapping(value = "/{idSolicitante}/{idEditar}", produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(summary = "Editar usuario", description = "Permite editar las características de un usuario ingresando su Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "No se pudo procesar la solicitud", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "Usuario editado correctamente", content = @Content(mediaType = "application/json"))
+    })
+
     public ResponseEntity<?> editarUsuario(
             @RequestBody UsuarioRequestDTO usuarioRequestDTO,
             @PathVariable Long idSolicitante,
