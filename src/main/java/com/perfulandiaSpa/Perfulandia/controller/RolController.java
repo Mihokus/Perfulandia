@@ -43,8 +43,7 @@ public class RolController {
                                            schema = @Schema(implementation = RolRequestDTO.class),
                                            examples = @ExampleObject(
                                            name = "Ejemplo Rol",
-                                           value = "{\"nombrePermiso\":\"CREAR_USUARIO\","+
-                                                   "\"permisoId\":\"1}")))
+                                           value = "{\"nombrePermiso\": \"CREAR_USUARIO\", \"permisoId\": \"1\"}")))
                                            @RequestBody RolRequestDTO rolRequestDTO,
                                            @Parameter(description = "ID del usuario que desea crear el rol", example = "1")
                                            @PathVariable Long idUsuario) {
